@@ -11,6 +11,14 @@
 
 ---
 
+## 📸 Demo
+
+![Sol MCP Server Demo](screenshots/demo_screenshot.svg)
+
+*Claude Desktop connected to Solana via MCP — asking about balances, tokens, and wallet analysis*
+
+---
+
 ## ✨ What It Can Do
 
 | Tool | Description |
