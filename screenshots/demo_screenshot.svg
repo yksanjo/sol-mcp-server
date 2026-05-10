@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg)" rx="16"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="800" height="50" fill="#1a1a3e" rx="16"/>
+  <rect x="0" y="30" width="800" height="20" fill="#1a1a3e"/>
+  
+  <!-- Window dots -->
+  <circle cx="30" cy="25" r="6" fill="#ff5f57"/>
+  <circle cx="50" cy="25" r="6" fill="#ffbd2e"/>
+  <circle cx="70" cy="25" r="6" fill="#28c840"/>
+  
+  <!-- Title -->
+  <text x="100" y="30" fill="#888" font-family="Inter, sans-serif" font-size="13">Claude Desktop — Solana MCP Connected</text>
+  
+  <!-- MCP Indicator -->
+  <rect x="620" y="15" width="160" height="22" rx="12" fill="#1a3a2e"/>
+  <circle cx="635" cy="26" r="4" fill="#69f0ae"/>
+  <text x="645" y="30" fill="#69f0ae" font-family="Inter, sans-serif" font-size="11" font-weight="bold">🔌 solana • 8 tools</text>
+  
+  <!-- User message -->
+  <rect x="20" y="70" width="760" height="60" rx="12" fill="#2a2a4a"/>
+  <rect x="20" y="70" width="4" height="60" rx="2" fill="#4fc3f7"/>
+  <text x="40" y="90" fill="#4fc3f7" font-family="Inter, sans-serif" font-size="11" font-weight="bold" text-transform="uppercase">YOU</text>
+  <text x="40" y="110" fill="#e0e0e0" font-family="Inter, sans-serif" font-size="14">What's the SOL balance of address 7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf?</text>
+  
+  <!-- Thinking -->
+  <text x="40" y="155" fill="#666" font-family="Inter, sans-serif" font-size="12" font-style="italic">Calling sol_get_balance...</text>
+  
+  <!-- Tool call -->
+  <rect x="40" y="170" width="720" height="65" rx="8" fill="#252545"/>
+  <text x="60" y="190" fill="#ffd54f" font-family="monospace" font-size="12" font-weight="bold">sol_get_balance</text>
+  <text x="60" y="210" fill="#90caf9" font-family="monospace" font-size="12">  address</text>
+  <text x="130" y="210" fill="#ce93d8" font-family="monospace" font-size="12">: "7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf"</text>
+  
+  <!-- Result -->
+  <rect x="20" y="255" width="760" height="100" rx="12" fill="#1e1e3e"/>
+  <rect x="20" y="255" width="4" height="100" rx="2" fill="#69f0ae"/>
+  <text x="40" y="275" fill="#69f0ae" font-family="Inter, sans-serif" font-size="11" font-weight="bold">CLAUDE</text>
+  
+  <!-- Result content -->
+  <rect x="40" y="290" width="720" height="50" rx="8" fill="#1a1a35" stroke="#2a2a5a" stroke-width="1"/>
+  <text x="60" y="310" fill="#69f0ae" font-family="monospace" font-size="13" font-weight="bold">💰 SOL Balance: 1,234.567890 SOL</text>
+  <text x="60" y="330" fill="#888" font-family="monospace" font-size="12">   Address: 7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf</text>
+  
+  <!-- Footer -->
+  <text x="400" y="580" fill="#555" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">github.com/yksanjo/sol-mcp-server</text>
+</svg>
