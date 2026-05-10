@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sol MCP Server Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+  
+  .card {
+    background: #16213e;
+    border-radius: 16px;
+    border: 1px solid #2a2a4a;
+    width: 800px;
+    max-width: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  
+  .card-header {
+    background: #1a1a3e;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2a2a4a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .card-header .dots { display: flex; gap: 8px; }
+  .card-header .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .card-header .dot.red { background: #ff5f57; }
+  .card-header .dot.yellow { background: #ffbd2e; }
+  .card-header .dot.green { background: #28c840; }
+  .card-header .title { color: #888; font-size: 13px; font-weight: 500; margin-left: 8px; }
+  
+  .card-body { padding: 24px; }
+  
+  .user-message {
+    background: #2a2a4a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 3px solid #4fc3f7;
+  }
+  .user-message .label { color: #4fc3f7; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .user-message .text { color: #e0e0e0; font-size: 15px; line-height: 1.5; }
+  
+  .assistant-message {
+    background: #1e1e3e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border-left: 3px solid #69f0ae;
+  }
+  .assistant-message .label { color: #69f0ae; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  
+  .tool-call {
+    background: #252545;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+  }
+  .tool-call .tool-name { color: #ffd54f; font-weight: 600; }
+  .tool-call .tool-param { color: #90caf9; }
+  .tool-call .tool-value { color: #ce93d8; }
+  
+  .result-block {
+    background: #1a1a35;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    border: 1px solid #2a2a5a;
+  }
+  .result-block .sol { color: #69f0ae; }
+  .result-block .usd { color: #4fc3f7; }
+  .result-block .num { color: #ffd54f; }
+  .result-block .label-text { color: #888; }
+  .result-block .token { color: #ce93d8; }
+  .result-block .success { color: #69f0ae; }
+  .result-block .fail { color: #ef5350; }
+  
+  .thinking { color: #666; font-size: 13px; font-style: italic; padding: 8px 0; margin-bottom: 8px; }
+  
+  .title-text { color: #fff; font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+  .subtitle-text { color: #888; font-size: 16px; text-align: center; margin-bottom: 24px; }
+  
+  .mcp-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a3a2e;
+    color: #69f0ae;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: auto;
+  }
+  .mcp-indicator .dot-pulse { width: 8px; height: 8px; background: #69f0ae; border-radius: 50%; animation: pulse 2s infinite; }
+  
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body>
+
+<div class="title-text">☀️ Sol MCP Server</div>
+<div class="subtitle-text">The most comprehensive MCP server for Solana — in action</div>
+
+<!-- Screenshot 1: Balance Check -->
+<div class="card">
+  <div class="card-header">
+    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+    <span class="title">Claude Desktop — Solana MCP Connected</span>
+    <div class="mcp-indicator"><div class="dot-pulse"></div> 🔌 solana • 8 tools</div>
+  </div>
+  <div class="card-body">
+    <div class="user-message">
+      <div class="label">You</div>
+      <div class="text">What's the SOL balance of address <strong>7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf</strong>?</div>
+    </div>
+    <div class="thinking">Calling sol_get_balance...</div>
+    <div class="tool-call">
+      <span class="tool-name">sol_get_balance</span>(<br>
+      &nbsp;&nbsp;<span class="tool-param">address</span>: <span class="tool-value">"7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf"</span><br>
+      )
+    </div>
+    <div class="assistant-message">
+      <div class="label">Claude</div>
+      <div class="result-block">💰 <span class="sol">SOL Balance: 1,234.567890 SOL</span>
+<span class="label-text">   Address: 7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot 2: Wallet Analysis -->
+<div class="card">
+  <div class="card-header">
+    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+    <span class="title">Claude Desktop — Wallet Analysis</span>
+    <div class="mcp-indicator"><div class="dot-pulse"></div> 🔌 solana • 8 tools</div>
+  </div>
+  <div class="card-body">
+    <div class="user-message">
+      <div class="label">You</div>
+      <div class="text">Analyze this wallet and tell me the estimated USD value: <strong>7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf</strong></div>
+    </div>
+    <div class="thinking">Calling sol_analyze_wallet...</div>
+    <div class="tool-call">
+      <span class="tool-name">sol_analyze_wallet</span>(<br>
+      &nbsp;&nbsp;<span class="tool-param">address</span>: <span class="tool-value">"7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtVf"</span><br>
+      )
+    </div>
+    <div class="assistant-message">
+      <div class="label">Claude</div>
+      <div class="result-block">📊 <span class="sol">Wallet Analysis</span>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💰 <span class="sol">SOL Balance: 1,234.567890 SOL</span> (<span class="usd">$185,185.18 USD</span>)
+
+🪙 <span class="token">Token Holdings: 12 tokens</span>
+
+Top Tokens:
+  •   50000.000000 <span class="token">(mint: EPjFWdd5...)</span> — USDC
+  •    1000.000000 <span class="token">(mint: DezXAZ8z...)</span> — BONK
+  •     500.000000 <span class="token">(mint: mSoLzYCx...)</span> — mSOL
+
+📋 <span class="success">Recent Transactions (5):</span>
+  ✅ 5U3bH8... | 05/10 14:32
+  ✅ 2X9fK1... | 05/10 13:15
+  ❌ 9B2eF5... | 05/10 10:22
+  ✅ 1C3gH6... | 05/09 23:15</div>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot 3: Token Price + Swap Quote -->
+<div class="card">
+  <div class="card-header">
+    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+    <span class="title">Claude Desktop — Token Price & Swap Quote</span>
+    <div class="mcp-indicator"><div class="dot-pulse"></div> 🔌 solana • 8 tools</div>
+  </div>
+  <div class="card-body">
+    <div class="user-message">
+      <div class="label">You</div>
+      <div class="text">What's the price of BONK? Also get me a swap quote for 0.5 SOL to USDC.</div>
+    </div>
+    <div class="thinking">Calling sol_get_token_price and sol_get_swap_quote...</div>
+    <div class="tool-call">
+      <span class="tool-name">sol_get_token_price</span>(<br>
+      &nbsp;&nbsp;<span class="tool-param">token</span>: <span class="tool-value">"BONK"</span><br>
+      )
+    </div>
+    <div class="tool-call">
+      <span class="tool-name">sol_get_swap_quote</span>(<br>
+      &nbsp;&nbsp;<span class="tool-param">input_token</span>: <span class="tool-value">"So11111111111111111111111111111111111111112"</span>,<br>
+      &nbsp;&nbsp;<span class="tool-param">output_token</span>: <span class="tool-value">"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"</span>,<br>
+      &nbsp;&nbsp;<span class="tool-param">amount</span>: <span class="tool-value">0.5</span>,<br>
+      &nbsp;&nbsp;<span class="tool-param">slippage</span>: <span class="tool-value">0.5</span><br>
+      )
+    </div>
+    <div class="assistant-message">
+      <div class="label">Claude</div>
+      <div class="result-block">💵 <span class="usd">BONK Price: $0.000034</span>
+   Mint: DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263
+
+🔄 <span class="sol">Swap Quote: 0.5 SOL → USDC</span>
+   Input:  0.5 SOL
+   Output: 74.82 USDC
+   Price Impact: 0.15%
+   Routes: 3 routes available
+   Slippage: 0.5%</div>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot 4: Gas Fees -->
+<div class="card">
+  <div class="card-header">
+    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+    <span class="title">Claude Desktop — Network Fees</span>
+    <div class="mcp-indicator"><div class="dot-pulse"></div> 🔌 solana • 8 tools</div>
+  </div>
+  <div class="card-body">
+    <div class="user-message">
+      <div class="label">You</div>
+      <div class="text">What are the current gas fees on Solana?</div>
+    </div>
+    <div class="thinking">Calling sol_get_gas_price...</div>
+    <div class="tool-call">
+      <span class="tool-name">sol_get_gas_price</span>()
+    </div>
+    <div class="assistant-message">
+      <div class="label">Claude</div>
+      <div class="result-block">⛽ <span class="sol">Solana Network Fees</span>
+   Current Priority Fee (avg): 1,234 microlamports
+   Current Priority Fee (max): 5,678 microlamports
+   Estimated TX Cost: ~0.000006 SOL
+   Estimated TX Cost: ~$0.0009 USD (at $150/SOL)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot 5: Token Search -->
+<div class="card">
+  <div class="card-header">
+    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+    <span class="title">Claude Desktop — Token Search</span>
+    <div class="mcp-indicator"><div class="dot-pulse"></div> 🔌 solana • 8 tools</div>
+  </div>
+  <div class="card-body">
+    <div class="user-message">
+      <div class="label">You</div>
+      <div class="text">Search for the JUP token</div>
+    </div>
+    <div class="thinking">Calling sol_search_token...</div>
+    <div class="tool-call">
+      <span class="tool-name">sol_search_token</span>(<br>
+      &nbsp;&nbsp;<span class="tool-param">query</span>: <span class="tool-value">"JUP"</span><br>
+      )
+    </div>
+    <div class="assistant-message">
+      <div class="label">Claude</div>
+      <div class="result-block">🔍 <span class="sol">Token Search Results for 'JUP'</span>
+  • JUP       | Jupiter                 | JUPyiwrYJF...
+  • JUPBOY    | Jupiter Boy             | JUPBOY...
+  • JUPL      | Jupiter Lend            | JUPL...</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://github.com/yksanjo/sol-mcp-server">github.com/yksanjo/sol-mcp-server</a> • MIT License • Built by Yoshi Kondo
+</div>
+
+</body>
+</html>
